@@ -1,18 +1,17 @@
-#!/bin/bash
+#Download the Nessus KEV catalog as a csv
+wget -N https://www.cisa.gov/sites/default/files/csv/known_exploited_vulnerabilities.csv -q -O kev_catalog.csv
+kev_cat=kev_catalog.csv
 
-Help () {
-	echo "Usage: ./nessuskev.sh <<CSV Nessus report>>"$'\n'
-	echo "-Identifies all of the CVEs listed in the Nessus report"
-	echo "-Formats the output into the format used in the \"Nessus KEV catalog\" PTWS finding"
-	echo "-It's just a bash one liner but I didn't want to forget how to do it :)"
-}
+#Take the Nessus scan from the mission and pull out the CVEs
+mission_cves=$(cat $1 | grep '"CVE-*' | cut -d ',' -f2 | sort -u )
 
-if [[ $1 == '' ]]; then
-	echo "Please supply the Nessus report in CSV format or use -h for help"
-	exit
-elif [[ $1 == '-h' ]]; then
-	Help
-	exit
-fi
-
-cat $1 | grep -E '"CVE-*' | cut -d ',' -f2 | uniq -c | sort -u | awk -F ' ' '{print $2,": ",$1","}' | sed 's/" :/":/g' | sed 's/: /:/g' | awk '{print}' ORS=' ' | sed 's/, "/,"/g'
+while read line;
+do
+   final=$(grep $line $kev_cat | cut -d ',' -f 1 )
+   while read cve;
+   do
+      grep $cve $1 | cut -d ',' -f 2
+   done <<< $final
+done <<< $mission_cves | uniq -c | sort -nr | awk -F ' ' '{print $2,": ",$1","}' | sed 's/ :/:/g' | sed 's/:  /: /g' | sed "s/\"/'/g" | awk '{print}' ORS=' '
+#delete the KEV catalog
+rm $kev_cat
