@@ -1,5 +1,19 @@
 #!/bin/bash
 
+Help () {
+	echo "Usage: ./passpol.sh <<CME --pass-pol>>"$'\n'
+	echo "-Spits out the CTIME string for \"Password Policy\""
+  	echo "!***OUTPUT THE RESULTS OF CME --PASS-POL TO A FILE AND USE THAT FILE WITH THIS SCRIPT***!"
+}
+
+if [[ $1 == '' ]]; then
+	echo "Please supply a file with plaintext passwords or use -h for help"
+	exit
+elif [[ $1 == '-h' ]]; then
+	Help
+	exit
+fi
+
 read -rp "Is MFA enabled? (yes/no): " mfa_status
 
 # Convert the input to lowercase for case-insensitive comparison
@@ -15,7 +29,7 @@ else
   MFAenabled=0
 fi
 
-#strip all formatting out of the input file and make a temp, randomly named file
+#strip all formatting out of the input
 sed 's/\x1b\[[0-9;]*m//g' $1 > 764228fb7d6bdb58feb0887af12d2890.txt
 
 #{"EnforcePasswordHistory":[{"Yes(1)/No(0)":0}],
