@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #Download the Nessus KEV catalog as a csv
 wget https://www.cisa.gov/sites/default/files/csv/known_exploited_vulnerabilities.csv -q -O kev_catalog.csv
 kev_cat=kev_catalog.csv
