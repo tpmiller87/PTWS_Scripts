@@ -14,7 +14,7 @@ do
    do
       grep $cve $1 | cut -d ',' -f 2
    done <<< $final
-done <<< $mission_cves | uniq -c | sort -nr | awk -F ' ' '{print $2,": ",$1","}' | sed 's/ :  /: /g' | sed "s/\"/'/g" | awk '{print}' ORS=' ')
+done <<< $mission_cves | uniq -c | sort -nr | awk -F ' ' '{print $2,": ",$1","}' | sed 's/ :  /: /g' | awk '{print}' ORS=' ')
 
 echo $ctime | tr -d '\n' | sed 's/,$//'
 
