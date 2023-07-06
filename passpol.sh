@@ -7,10 +7,7 @@ Help () {
 }
 
 if [[ $1 == '' ]]; then
-	echo "Please supply a file with plaintext passwords or use -h for help"
-	exit
-elif [[ $1 == '-h' ]]; then
-	Help
+	echo "Please supply a file containing the password policy from CME or use -h for help"
 	exit
 fi
 
