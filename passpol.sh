@@ -9,6 +9,9 @@ Help () {
 if [[ $1 == '' ]]; then
 	echo "Please supply a file containing the password policy from CME or use -h for help"
 	exit
+ elif [[ $1 == '-h' ]]; then
+	Help
+	exit
 fi
 
 read -rp "Is MFA enabled? (yes/no): " mfa_status
